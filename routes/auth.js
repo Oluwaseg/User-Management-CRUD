@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("../model/User");
+const User = require("../model/model");
 
 const app = express();
 const jwtSecret = process.env.JWT_SECRET;
@@ -82,28 +82,8 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 // Middleware to verify JWT token
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  console.log("Requested path:", req.path);
-  if (!token && req.path !== "/user/login" && req.path !== "/user/register") {
-    console.log("Redirecting to login page because token is missing.");
-    return res.redirect("/user/login");
-  }
-  jwt.verify(token, jwtSecret, (err, decodedToken) => {
-    if (err && req.path !== "/user/login" && req.path !== "/user/register") {
-      console.error("Error verifying token:", err);
-      console.log("Redirecting to login page because token is invalid.");
-      return res.redirect("/user/login");
-    }
-    console.log("Decoded token:", decodedToken);
-    req.user = decodedToken; // Store decoded token data in request object
-    next();
-  });
-};
-
 // Logout endpoint
-app.post("/logout", authenticateToken, async (req, res) => {
+app.post("/logout", async (req, res) => {
   try {
     // Assuming you have a User model with a tokens field
     req.user.tokens = []; // Clear all tokens for the user
@@ -116,4 +96,3 @@ app.post("/logout", authenticateToken, async (req, res) => {
 });
 
 module.exports = app;
-module.exports.authenticateToken = authenticateToken;

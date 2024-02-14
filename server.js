@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 
 const path = require("path");
 
-const connectDB = require("./server/database/connection");
+const connectDB = require("./database/connection");
 
 const app = express();
 
@@ -28,13 +28,10 @@ app.set("view engine", "ejs");
 //app.set("views", path.resolve(__dirname, "views/ejs"))
 
 // load assets
-app.use("/css", express.static(path.resolve(__dirname, "assets/css")));
-app.use("/img", express.static(path.resolve(__dirname, "assets/img")));
-app.use("/js", express.static(path.resolve(__dirname, "assets/js")));
-
+app.use(express.static("assets"));
 // load routers
-app.use("/", require("./server/routes/router"));
-app.use("/user", require("./server/routes/auth"));
+app.use("/", require("./routes/router"));
+app.use("/user", require("./routes/auth"));
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
