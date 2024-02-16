@@ -25,13 +25,14 @@ app.use(cookieParser());
 
 // set view engine
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 //app.set("views", path.resolve(__dirname, "views/ejs"))
 
 // load assets
 app.use(express.static("assets"));
 // load routers
-app.use("/", require("./routes/router"));
-app.use("/user", require("./routes/auth"));
+app.use("/", require("./routes/crudRoute"));
+app.use("/user", require("./routes/authRoute"));
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

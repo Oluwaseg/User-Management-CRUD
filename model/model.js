@@ -11,8 +11,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  gender: String,
-  status: String,
   password: {
     type: String,
     required: true,
@@ -25,6 +23,20 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-const User = mongoose.model("User", userSchema);
+const crudDataSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  gender: String,
+  status: String,
+});
 
-module.exports = User;
+const User = mongoose.model("User", userSchema);
+const CrudData = mongoose.model("CrudData", crudDataSchema);
+
+module.exports = { User, CrudData };
