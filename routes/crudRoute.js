@@ -1,12 +1,14 @@
 const express = require("express");
 const axios = require("axios");
-const router = express.Router();
 const { CrudData } = require("../model/model");
-const { authMiddleware, verifyToken } = require("../controller/authController");
+const { authMiddleware } = require("../controller/authController");
 
-router.use(verifyToken);
-// Root Route
-router.get("/", authMiddleware, (req, res) => {
+const route = express.Router();
+// Apply authentication middleware to protect routes
+
+// Render services
+
+route.get("/", authMiddleware, (req, res) => {
   axios
     .get("http://localhost:3000/api/users")
     .then(function (response) {
@@ -18,13 +20,11 @@ router.get("/", authMiddleware, (req, res) => {
     });
 });
 
-// Add user route
-router.get("/add-user", (req, res) => {
+route.get("/add-user", (req, res) => {
   res.render("add_user");
 });
 
-// Update user route
-router.get("/update-user", (req, res) => {
+route.get("/update-user", (req, res) => {
   axios
     .get("http://localhost:3000/api/users", { params: { id: req.query.id } })
     .then(function (userdata) {
@@ -36,26 +36,21 @@ router.get("/update-user", (req, res) => {
 });
 
 // API routes
-
-// Create user
-router.post("/api/users", authMiddleware, (req, res) => {
+route.post("/api/users", (req, res) => {
   if (!req.body) {
     res.status(400).send({ message: "Content can not be empty!" });
     return;
   }
 
-  const user = req.user; // Get the authenticated user from the request object
-
-  const newData = new CrudData({
+  const user = new CrudData({
     name: req.body.name,
     email: req.body.email,
     gender: req.body.gender,
     status: req.body.status,
-    createdBy: user._id, // Associate the data with the authenticated user's ID
   });
 
-  newData
-    .save()
+  user
+    .save(user)
     .then((data) => {
       res.redirect("/add-user");
     })
@@ -68,34 +63,46 @@ router.post("/api/users", authMiddleware, (req, res) => {
     });
 });
 
-// Read operation
-router.get("/api/users", authMiddleware, (req, res) => {
-  const userId = req.user._id; // Get the authenticated user's ID
+route.get("/api/users", (req, res) => {
+  if (req.query.id) {
+    const id = req.query.id;
 
-  CrudData.find({ createdBy: userId }) // Find data entries associated with the authenticated user's ID
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error Occurred while retrieving user information",
+    CrudData.findById(id)
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({ message: "Not found user with id " + id });
+        } else {
+          res.send(data);
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({ message: "Erro retrieving user with id " + id });
       });
-    });
+  } else {
+    CrudData.find()
+      .then((user) => {
+        res.send(user);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Error Occurred while retriving user information",
+        });
+      });
+  }
 });
 
-// Update operation
-router.put("/api/users/:id", authMiddleware, (req, res) => {
-  const userId = req.user._id; // Get the authenticated user's ID
-  const id = req.params.id;
+route.put("/api/users/:id", (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({ message: "Data to update can not be empty" });
+  }
 
-  // Find the data entry by ID and ensure it belongs to the authenticated user
-  CrudData.findOneAndUpdate({ _id: id, createdBy: userId }, req.body, {
-    new: true,
-  })
+  const id = req.params.id;
+  CrudData.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot Update user with ${id}. Maybe user not found or unauthorized!`,
+          message: `Cannot Update user with ${id}. Maybe user not found!`,
         });
       } else {
         res.send(data);
@@ -106,28 +113,22 @@ router.put("/api/users/:id", authMiddleware, (req, res) => {
     });
 });
 
-// Delete operation
-router.delete("/api/users/:id", authMiddleware, (req, res) => {
-  const userId = req.user._id; // Get the authenticated user's ID
+route.delete("/api/users/:id", (req, res) => {
   const id = req.params.id;
 
-  // Find the data entry by ID and ensure it belongs to the authenticated user
-  CrudData.findOneAndDelete({ _id: id, createdBy: userId })
+  CrudData.findByIdAndDelete(id)
     .then((data) => {
       if (!data) {
-        res.status(404).send({
-          message: `Cannot Delete with id ${id}. Maybe id is wrong or unauthorized!`,
-        });
+        res
+          .status(404)
+          .send({ message: `Cannot Delete with id ${id}. Maybe id is wrong` });
       } else {
-        res.send({
-          message: "User was deleted successfully!",
-        });
+        res.send({ message: "User was deleted successfully!" });
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete User with id=" + id,
-      });
+      res.status(500).send({ message: "Could not delete User with id=" + id });
     });
 });
-module.exports = router;
+
+module.exports = route;
