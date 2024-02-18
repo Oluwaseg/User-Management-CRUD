@@ -4,20 +4,26 @@ const { CrudData } = require("../model/model");
 const { authMiddleware } = require("../controller/authController");
 
 const route = express.Router();
-// Apply authentication middleware to protect routes
+
+route.use(authMiddleware);
 
 // Render services
 
-route.get("/", authMiddleware, (req, res) => {
-  axios
-    .get("http://localhost:3000/api/users")
-    .then(function (response) {
-      console.log(response.data);
-      res.render("index", { users: response.data, name: req.user.name });
-    })
-    .catch((err) => {
-      res.send(err);
-    });
+route.get("/", async (req, res) => {
+  try {
+    // Check if user is authenticated
+    if (req.user) {
+      // User is authenticated, fetch and render only their own data
+      const userData = await CrudData.find({ createdBy: req.user._id });
+      res.render("index", { users: userData, name: req.user.name });
+    } else {
+      // User is not authenticated, redirect to login page
+      res.redirect("/user/login");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).send({ message: "Error fetching data" });
+  }
 });
 
 route.get("/add-user", (req, res) => {
@@ -36,31 +42,86 @@ route.get("/update-user", (req, res) => {
 });
 
 // API routes
-route.post("/api/users", (req, res) => {
-  if (!req.body) {
-    res.status(400).send({ message: "Content can not be empty!" });
-    return;
-  }
+route.post("/api/users", async (req, res) => {
+  try {
+    const user = req.user; // Get authenticated user from authMiddleware
 
-  const user = new CrudData({
-    name: req.body.name,
-    email: req.body.email,
-    gender: req.body.gender,
-    status: req.body.status,
-  });
-
-  user
-    .save(user)
-    .then((data) => {
-      res.redirect("/add-user");
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Some error occurred while creating a create operation",
-      });
+    // Create new data associated with the authenticated user's ID
+    const newData = new CrudData({
+      name: req.body.name,
+      email: req.body.email,
+      gender: req.body.gender,
+      status: req.body.status,
+      createdBy: user._id, // Access _id from the User model
     });
+
+    // Save the data
+    await newData.save();
+    res.redirect("/add-user");
+  } catch (error) {
+    console.error("Error creating data:", error);
+    res
+      .status(500)
+      .send({ message: "Error creating data", error: error.message });
+  }
+});
+
+route.get("/api/users/:id", async (req, res) => {
+  try {
+    const user = req.user; // Get authenticated user
+    const id = req.params.id;
+
+    // Find data by ID and check if it belongs to the authenticated user
+    const data = await CrudData.findOne({ _id: id, createdBy: user._id });
+
+    if (!data) {
+      return res.status(404).send({ message: "Data not found" });
+    }
+
+    res.send(data);
+  } catch (error) {
+    res.status(500).send({ message: "Error retrieving data" });
+  }
+});
+
+route.put("/api/users/:id", async (req, res) => {
+  try {
+    const user = req.user; // Get authenticated user
+    const id = req.params.id;
+
+    // Find data by ID and check if it belongs to the authenticated user
+    const data = await CrudData.findOne({ _id: id, createdBy: user._id });
+
+    if (!data) {
+      return res.status(404).send({ message: "Data not found" });
+    }
+
+    // Update the data
+    await CrudData.findByIdAndUpdate(id, req.body, { useFindAndModify: false });
+    res.send({ message: "Data updated successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Error updating data" });
+  }
+});
+
+route.delete("/api/users/:id", async (req, res) => {
+  try {
+    const user = req.user; // Get authenticated user
+    const id = req.params.id;
+
+    // Find data by ID and check if it belongs to the authenticated user
+    const data = await CrudData.findOne({ _id: id, createdBy: user._id });
+
+    if (!data) {
+      return res.status(404).send({ message: "Data not found" });
+    }
+
+    // Delete the data
+    await CrudData.findByIdAndDelete(id);
+    res.send({ message: "Data deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Error deleting data" });
+  }
 });
 
 route.get("/api/users", (req, res) => {

@@ -34,6 +34,11 @@ const crudDataSchema = new mongoose.Schema({
   },
   gender: String,
   status: String,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId, // Store the user's unique identifier
+    ref: "User", // Reference the User model for easy population
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

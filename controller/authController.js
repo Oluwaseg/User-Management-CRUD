@@ -40,7 +40,7 @@ const authMiddleware = async (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (!token) {
-      return res.redirect("/user/login");
+      return next();
     }
 
     const decoded = jwt.verify(token, secretKey);
@@ -48,6 +48,7 @@ const authMiddleware = async (req, res, next) => {
     const user = await User.findById(decoded.userId);
 
     if (!user || !user.tokens.includes(token)) {
+      res.clearCookie("jwt");
       return res.redirect("/user/login");
     }
 
