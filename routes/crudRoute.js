@@ -18,7 +18,7 @@ route.get("/", async (req, res) => {
       res.render("index", { users: userData, name: req.user.name });
     } else {
       // User is not authenticated, redirect to login page
-      res.redirect("/user/login");
+      res.redirect("/login");
     }
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -32,7 +32,9 @@ route.get("/add-user", (req, res) => {
 
 route.get("/update-user", (req, res) => {
   axios
-    .get("http://localhost:3000/api/users", { params: { id: req.query.id } })
+    .get("http://localhost:3000/home/api/users", {
+      params: { id: req.query.id },
+    })
     .then(function (userdata) {
       res.render("update_user", { user: userdata.data });
     })
@@ -57,7 +59,7 @@ route.post("/api/users", async (req, res) => {
 
     // Save the data
     await newData.save();
-    res.redirect("/add-user");
+    res.redirect("/home/add-user");
   } catch (error) {
     console.error("Error creating data:", error);
     res

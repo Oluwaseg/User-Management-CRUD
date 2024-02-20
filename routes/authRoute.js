@@ -5,20 +5,20 @@ const router = express.Router();
 router.use(authController.verifyToken);
 
 router.post("/login", authController.loginUser);
-router.post("/register", authController.registerUser);
+router.post("/", authController.registerUser);
 
 router.use(authController.checkTokenBlacklist);
 
-router.get("/register", (req, res) => {
+router.get("/", (req, res) => {
   if (req.user) {
-    return res.redirect("/");
+    return res.redirect("/home");
   }
   res.render("register.ejs");
 });
 
 router.get("/login", (req, res) => {
   if (req.user) {
-    return res.redirect("/");
+    return res.redirect("/home");
   }
   res.render("login");
 });

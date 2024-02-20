@@ -1,89 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-
-      form {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-      }
-
-      h2 {
-        margin-bottom: 20px;
-        text-align: center;
-      }
-
-      input[type="text"],
-      input[type="email"],
-      input[type="password"],
-      input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
-
-      input[type="submit"] {
-        background-color: #4caf50;
-        color: white;
-        cursor: pointer;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #45a049;
-      }
-
-      .error {
-        color: red;
-        margin-bottom: 10px;
-        text-align: center;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/bootstrap/css/bootstrap.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/fonts/iconic/css/material-design-iconic-font.min.css"
+    />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css" />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/css-hamburgers/hamburgers.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/animsition/css/animsition.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/select2/select2.min.css"
+    />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/vendor/daterangepicker/daterangepicker.css"
+    />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/css/util.css" />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <!--===============================================================================================-->
   </head>
   <body>
-    <form id="register-form" method="post" action="/user/register">
-      <h2>Register</h2>
-      <div class="error" id="register-error"></div>
-      <input
-        type="text"
-        id="register-name"
-        placeholder="Name"
-        name="name"
-        required
-      />
-      <input
-        type="email"
-        id="register-email"
-        placeholder="Email"
-        name="email"
-        required
-      />
-      <input
-        type="password"
-        id="register-password"
-        placeholder="Password"
-        name="password"
-        required
-      />
-      <input type="submit" value="Register" />
-    </form>
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <form class="login100-form validate-form" method="post" action="/">
+            <span class="login100-form-title p-b-26"> Register </span>
+
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Valid email is: a@b.c"
+            >
+              <input class="input100" type="text" name="name" />
+              <span
+                class="focus-input100"
+                data-placeholder="Enter your name"
+              ></span>
+            </div>
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Valid email is: a@b.c"
+            >
+              <input class="input100" type="text" name="email" />
+              <span class="focus-input100" data-placeholder="Email"></span>
+            </div>
+
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Enter password"
+            >
+              <span class="btn-show-pass">
+                <i class="zmdi zmdi-eye"></i>
+              </span>
+              <input class="input100" type="password" name="password" />
+              <span class="focus-input100" data-placeholder="Password"></span>
+            </div>
+
+            <!-- Add more registration fields here -->
+
+            <div class="container-login100-form-btn">
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn" type="submit">
+                  Register
+                </button>
+              </div>
+            </div>
+
+            <div class="text-center p-t-115">
+              <span class="txt1"> Already have an account? </span>
+
+              <a class="txt2" href="/login"> Login </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="dropDownSelect1"></div>
+
+    <!--===============================================================================================-->
+    <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/bootstrap/js/popper.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/daterangepicker/moment.min.js"></script>
+    <script src="/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="/js/main.js"></script>
   </body>
 </html>

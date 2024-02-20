@@ -49,14 +49,14 @@ const authMiddleware = async (req, res, next) => {
 
     if (!user || !user.tokens.includes(token)) {
       res.clearCookie("jwt");
-      return res.redirect("/user/login");
+      return res.redirect("/login");
     }
 
     req.user = user;
     next();
   } catch (error) {
     console.error("Auth Middleware - JWT verification failed:", error);
-    return res.redirect("/user/login");
+    return res.redirect("/login");
   }
 };
 
@@ -92,13 +92,11 @@ const registerUser = async (req, res) => {
       sameSite: "strict",
     });
 
-    setTimeout(() => {
-      res.redirect("/user/login");
-    }, 3000);
+    res.redirect("/login");
   } catch (error) {
     console.error("Registration failed:", error);
 
-    res.redirect("/user/register");
+    res.redirect("/");
   }
 };
 
@@ -110,14 +108,14 @@ const loginUser = async (req, res, next) => {
 
     if (!user) {
       console.log("error", "Invalid email or password");
-      return res.redirect("/user/login");
+      return res.redirect("/login");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       console.log("Please check your email and password.");
-      return res.redirect("/user/login");
+      return res.redirect("/login");
     }
 
     const token = createToken(user);
@@ -134,7 +132,7 @@ const loginUser = async (req, res, next) => {
       sameSite: "strict",
     });
 
-    return res.redirect("/");
+    return res.redirect("/home/");
   } catch (error) {
     console.error("An error occurred:", error);
     return next(error);
@@ -144,7 +142,7 @@ const logoutUser = async (req, res) => {
   try {
     if (!req.user) {
       console.log("Logout failed. User not authenticated.");
-      return res.redirect("/user/login");
+      return res.redirect("/login");
     }
 
     if (req.user.tokens) {
@@ -158,10 +156,10 @@ const logoutUser = async (req, res) => {
     res.clearCookie("jwt");
 
     console.log("Logout successful!");
-    res.redirect("/user/login");
+    res.redirect("/login");
   } catch (error) {
     console.error("Logout failed:", error);
-    res.redirect("/");
+    res.redirect("/home");
   }
 };
 

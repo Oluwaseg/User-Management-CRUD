@@ -31,8 +31,8 @@ app.set("views", path.join(__dirname, "views"));
 // load assets
 app.use(express.static("assets"));
 // load routers
-app.use("/", require("./routes/crudRoute"));
-app.use("/user", require("./routes/authRoute"));
+app.use("/home", require("./routes/crudRoute"));
+app.use("/", require("./routes/authRoute"));
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
