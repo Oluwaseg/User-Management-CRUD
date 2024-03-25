@@ -239,83 +239,98 @@ const forgotPassword = async (req, res) => {
         return res.status(500).send("Failed to send email");
       } else {
         res.send(`<!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Forgot Password Success</title>
-      <!-- Bootstrap CSS -->
-      <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-      />
-      <!-- Tailwind CSS -->
-      <link
-        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-        rel="stylesheet"
-      />
-      <!-- Font Awesome -->
-      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-      <style>
-        /* Center the modal vertically and horizontally */
-        .modal {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 100vh;
-          padding: 0 10px;
-        }
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Forgot Password Success</title>
 
-        /* Styling for modal content */
-        .modal-content {
-          background-color: #ffffff;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-          padding: 20px;
-          max-width: 400px;
-          width: 100%;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Close button style */
-        .close {
-          color: #6b7280;
-          font-size: 20px;
-          cursor: pointer;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <div class="text-center">
-            <div class="text-green-500">
-              <i class="fas fa-check-circle fa-5x"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 mt-4">
-              Email Sent Successfully
-            </h2>
-            <p class="text-sm text-gray-600 mt-2">
-              Please check your email for further instructions.
-            </p>
-          </div>
-          <div class="flex justify-center mt-4">
-            <button
-              type="button"
-              onclick="window.location.href = '/login';"
-              class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+            <link
+              href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+              rel="stylesheet"
+            />
+          </head>
+          <body>
+            <div
+              id="successModal"
+              tabindex="-1"
+              aria-hidden="true"
+              class="hidden fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center shadow-lg"
             >
-              Go to Login
-            </button>
-          </div>
-        </div>
-      </div>
-    </body>
-  </html>
+              <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+                <!-- Modal content -->
+                <div
+                  class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+                >
+                  <button
+                    type="button"
+                    class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-toggle="successModal"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                  </button>
+                  <div
+                    class="w-12 h-12 rounded-full bg-white hover:bg-blue-100 transition duration-700 ease-in-out dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5 shadow-xl"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8 text-green-500 dark:text-green-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="sr-only">Success</span>
+                  </div>
+                  <p
+                    class="mb-4 mt-4 text-lg font-semibold text-gray-900 dark:text-white"
+                  >
+                    Email Sent Successfully
+                  </p>
+                  <p
+                    class="mb-4 mt-4 text-sm font-semibold text-gray-900 dark:text-white"
+                  >
+                    Please check your email for further instructions.
+                  </p>
+                  <button
+                    data-modal-toggle="successModal"
+                    type="button"
+                    onclick="window.location.href = '/login';"
+                    class="py-2 px-3 text-sm font-medium shadow-md text-center text-white rounded-lg bg-purple-600 hover:bg-white hover:text-purple-600 transition duration-700 ease-in-out hover:shadow-xl focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-900"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                // Show the modal when the page loads
+                document.getElementById("successModal").classList.remove("hidden");
+              });
+            </script>
+          </body>
+        </html>
+
   `);
       }
     });
