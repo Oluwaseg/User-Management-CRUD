@@ -49,7 +49,7 @@ $("#update_user").submit(function (event) {
   });
 
   var request = {
-    url: `http://localhost:3000/home/api/users/${data.id}`,
+    url: `/home/api/users/${data.id}`,
     method: "PUT",
     data: data,
   };
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
     if (confirm("Do you really want to delete this record?")) {
       var request = {
-        url: `http://localhost:3000/home/api/users/${id}`,
+        url: `/home/api/users/${id}`,
         method: "DELETE",
       };
 
