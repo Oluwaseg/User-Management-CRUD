@@ -7,11 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "keywords": [
     "crud",
     "mongodb"
   ],
-  "author": "akshay kashyap",
+  "author": "Samuel Oluwasegun",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
