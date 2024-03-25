@@ -5,6 +5,8 @@ const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 const path = require("path");
 
@@ -17,7 +19,7 @@ const PORT = process.env.PORT || 8080;
 
 // log requests
 app.use(morgan("tiny"));
-
+app.use(cors());
 // mongodb connection
 connectDB();
 
@@ -43,6 +45,12 @@ const logSession = (req, res, next) => {
   // console.log("Session Data:", req.session);
   next();
 };
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 app.use(logSession);
 // set view engine
 app.set("view engine", "ejs");
