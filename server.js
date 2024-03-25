@@ -5,6 +5,8 @@ const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
 
 const path = require("path");
 
@@ -17,7 +19,10 @@ const PORT = process.env.PORT || 8080;
 
 // log requests
 app.use(morgan("tiny"));
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 // mongodb connection
 connectDB();
 
@@ -37,8 +42,9 @@ app.use(
 if (process.env.NODE_ENV === "production") {
   sessionOptions.cookie.secure = true; // Enable secure cookie in production
 }
-
+app.use(limiter);
 app.use(flash());
+app.use(cors());
 const logSession = (req, res, next) => {
   // console.log("Session Data:", req.session);
   next();
