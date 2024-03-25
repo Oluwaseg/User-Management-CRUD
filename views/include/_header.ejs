@@ -11,19 +11,61 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body>
-    <!-- Header -->
-    <header id="header">
-      <nav>
-        <div class="container">
-          <div class="text-center">
-            <a href="/" class="nav-brand text-dark">User Management System</a>
+  <body class="bg-white">
+    <section class="flex items-center :bg-gray-900">
+      <div class="w-full max-w-screen-xl mx-auto lg:px-12">
+        <!-- Start coding here -->
+        <div
+          class="relative overflow-hidden mt-5 shadow-md dark:bg-gray-800 sm:rounded-lg"
+        >
+          <div
+            class="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4"
+          >
+            <div>
+              <a
+                href="/home"
+                class="flex items-center space-x-3 rtl:space-x-reverse"
+              >
+                <img
+                  src="https://preview.cruip.com/stellar/images/logo.svg"
+                  class="h-8"
+                  alt=" Logo"
+                />
+                <span
+                  class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white m-2"
+                  >Data<span class="text-purple-800">Fortress</span></span
+                >
+              </a>
+            </div>
+            <a
+              href="/home"
+              class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-purple-800 bg-white-50 rounded-lg md:w-auto hover:bg-purple-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 hover:bg-purple-800 hover:text-white transition duration-700 ease-in-out shadow-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3.5 w-3.5 mr-2 -ml-1"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"
+                />
+              </svg>
+
+              View Data
+            </a>
           </div>
         </div>
-      </nav>
-    </header>
-    <!-- /Header -->
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
   </body>
 </html>

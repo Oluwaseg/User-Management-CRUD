@@ -1,19 +1,37 @@
 <% for(var i = 0; i < users.length; i++) { %>
-<tr>
-  <td><%= i + 1 %></td>
-  <td><%= users[i].name %></td>
-  <td><%= users[i].email %></td>
-  <td><%= users[i].gender %></td>
-  <td><%= users[i].status %></td>
-  <td>
+<tr class="border-b dark:border-gray-700">
+  <th
+    scope="row"
+    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+  >
+    <%= i + 1 %>
+  </th>
+  <td class="px-4 py-3"><%= users[i].name %></td>
+  <td class="px-4 py-3 flowbite-address">
+    <div class="flowbite">
+      <p><%= users[i].street %>,</p>
+      <p><%= users[i].city %>,</p>
+      <p><%= users[i].state %></p>
+    </div>
+  </td>
+  <td class="px-4 py-3"><%= users[i].email %></td>
+  <td class="px-4 py-3"><%= users[i].phone %></td>
+  <td class="px-4 py-3"><%= users[i].gender %></td>
+  <td class="px-4 py-3"><%= users[i].status %></td>
+  <td class="px-4 py-3 flex items-center justify-content-sm-start">
     <a
       href="/home/update-user?id=<%= users[i]._id%>"
-      class="btn border-shadow update"
+      class="relative inline-flex items-center p-3 text-sm font-medium text-center text-purple-800 bg-gray-50 rounded-lg hover:bg-purple-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-700 ease-in-out shadow-md"
+      style="margin: 5px"
     >
-      <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
+      <span><i class="fas fa-pencil-alt py-2.5 px-2"></i></span>
     </a>
-    <a class="btn border-shadow delete" data-id="<%= users[i]._id %>">
-      <span class="text-gradient"><i class="fas fa-times"></i></span>
+    <a
+      class="relative inline-flex items-center p-3 text-sm font-medium text-center text-purple-800 bg-gray-50 rounded-lg hover:bg-purple-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-700 ease-in-out shadow-md btn delete"
+      style="margin: 5px"
+      data-id="<%= users[i]._id %>"
+    >
+      <span><i class="fas fa-times py-2.5 px-2"></i></span>
     </a>
   </td>
 </tr>

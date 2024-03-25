@@ -11,67 +11,174 @@
       integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
       crossorigin="anonymous"
     />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <!-- Header -->
-    <header id="header">
-      <nav>
-        <div class="container">
-          <div class="text-center">
-            <a href="/" class="nav-brand text-dark">User Management System</a>
-          </div>
-          <div class="d-flex justify-between">
-            <h3 class="text-dark">Welcome! <%= name %></h3>
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+      <div
+        class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+      >
+        <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img
+            src="https://preview.cruip.com/stellar/images/logo.svg"
+            class="h-8"
+            alt="Logo"
+          />
+          <span
+            class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+            >Data<span class="text-purple-800">Fortress</span></span
+          >
+        </a>
+        <div
+          class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+        >
+          <button
+            type="button"
+            class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            id="user-menu-button"
+            aria-expanded="false"
+            data-dropdown-toggle="user-dropdown"
+            data-dropdown-placement="bottom"
+          >
+            <span class="sr-only">Open user menu</span>
+            <div class="relative">
+              <img
+                class="w-10 h-15 rounded-full"
+                src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
+                alt="user photo"
+              />
+              <span
+                class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"
+              ></span>
+            </div>
+          </button>
+          <!-- Dropdown menu -->
+          <div
+            class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+            id="user-dropdown"
+          >
+            <div class="px-4 py-3">
+              <span class="block text-sm text-gray-900 dark:text-white"
+                ><%= name %></span
+              >
+              <span
+                class="block text-sm text-gray-500 truncate dark:text-gray-400"
+                ><%= email %></span
+              >
+            </div>
+            <ul class="py-2" aria-labelledby="user-menu-button">
+              <li>
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >Settings</a
+                >
+              </li>
 
-            <form id="logoutForm" action="/logout" method="get">
-              <button type="submit" class="button-85" role="button">
-                Logout
-              </button>
+              <li>
+                <form id="logoutForm" action="/logout" method="get">
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    <button type="submit">Logout</button></a
+                  >
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="flex items-center mb-3 p-3 bg-white-50 dark:bg-gray-900">
+      <div class="w-full max-w-screen-xl px-4 mx-auto lg:px-12">
+        <div class="relative overflow-hidden">
+          <div
+            class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4"
+          >
+            <a
+              href="/home/add-user"
+              class="flex items-center justify-center w-full px-4 py-2 text-purple-800 text-sm font-medium rounded-lg md:w-auto hover:bg-purple-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-700 ease-in-out shadow-md"
+            >
+              <svg
+                class="h-3.5 w-3.5 mr-2 -ml-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  clip-rule="evenodd"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                />
+              </svg>
+
+              Add User
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-3 sm:p-5 mb-24">
+      <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <div
+          class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <form action="/" method="POST">
+              <table
+                class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+              >
+                <thead
+                  class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                >
+                  <tr>
+                    <th scope="col" class="px-4 py-3">ID</th>
+                    <th scope="col" class="px-4 py-3">Name</th>
+                    <th scope="col" class="px-4 py-3">Address</th>
+                    <th scope="col" class="px-4 py-3">@Email</th>
+                    <th scope="col" class="px-4 py-3">Phone</th>
+                    <th scope="col" class="px-4 py-3">Gender</th>
+                    <th scope="col" class="px-4 py-3">Status</th>
+                    <th
+                      scope="col"
+                      class="px-4 py-3 flex items-center justify-content-sm-start"
+                    >
+                      <span class="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%- include('include/_show') %>
+                </tbody>
+              </table>
             </form>
           </div>
         </div>
-      </nav>
-    </header>
-
-    <main id="site-main">
-      <div class="container">
-        <div class="box-nav d-flex justify-between">
-          <a href="/home/add-user" class="border-shadow">
-            <span class="text-gradient"
-              >New User <i class="fas fa-user"></i
-            ></span>
-          </a>
-          <!-- <form action="/user/logout" method="get">
-            <button type="submit" class="text-gradient">Logout</button>
-          </form> -->
+        <div class="flex justify-center mt-4">
+          <% if (currentPage > 1) { %>
+          <a href="/home?page=<%= currentPage - 1 %>" class="mr-2 text-gray-500"
+            >&laquo; Previous</a
+          >
+          <% } %> <% if (currentPage < totalPages) { %>
+          <a href="/home?page=<%= currentPage + 1 %>" class="ml-2 text-gray-500"
+            >Next &raquo;</a
+          >
+          <% } %>
         </div>
-
-        <!-- form handling -->
-        <form action="/" method="POST">
-          <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>@Email</th>
-                <th>Gender</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <%- include('include/_show') %>
-            </tbody>
-          </table>
-        </form>
       </div>
-    </main>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-      crossorigin="anonymous"
-    ></script>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/index.js"></script>
   </body>
 </html>

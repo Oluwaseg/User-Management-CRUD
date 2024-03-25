@@ -14,8 +14,31 @@ route.get("/", async (req, res) => {
     // Check if user is authenticated
     if (req.user) {
       // User is authenticated, fetch and render only their own data
-      const userData = await CrudData.find({ createdBy: req.user._id });
-      res.render("index", { users: userData, name: req.user.name });
+      const page = parseInt(req.query.page) || 1; // Get the page number from the query parameters, default to 1 if not provided
+      const limit = 5; // Number of items per page
+      const skip = (page - 1) * limit; // Calculate the number of items to skip
+
+      // Fetch data with pagination
+      const userData = await CrudData.find({ createdBy: req.user._id })
+        .skip(skip)
+        .limit(limit);
+
+      // Count total number of documents
+      const totalCount = await CrudData.countDocuments({
+        createdBy: req.user._id,
+      });
+
+      // Calculate total number of pages
+      const totalPages = Math.ceil(totalCount / limit);
+
+      // Render the page with pagination information
+      res.render("index", {
+        users: userData,
+        name: req.user.name,
+        email: req.user.email,
+        currentPage: page,
+        totalPages: totalPages,
+      });
     } else {
       // User is not authenticated, redirect to login page
       res.redirect("/login");
@@ -54,6 +77,10 @@ route.post("/api/users", async (req, res) => {
       email: req.body.email,
       gender: req.body.gender,
       status: req.body.status,
+      street: req.body.street,
+      city: req.body.city,
+      state: req.body.state,
+      phone: req.body.phone,
       createdBy: user._id, // Access _id from the User model
     });
 

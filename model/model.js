@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  referrer: { type: String },
+  resetPasswordToken: String,
 });
 
 const crudDataSchema = new mongoose.Schema({
@@ -34,9 +36,13 @@ const crudDataSchema = new mongoose.Schema({
   },
   gender: String,
   status: String,
+  street: String,
+  city: String,
+  state: String,
+  phone: String,
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId, // Store the user's unique identifier
-    ref: "User", // Reference the User model for easy population
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
 });

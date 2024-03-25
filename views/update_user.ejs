@@ -1,67 +1,169 @@
-
 <!-- include header -->
 <%- include('include/_header') %>
 <!-- /include header -->
 
-  <!-- Main Site -->
-  <main id="site-main">
-    <div class="container">
-        <div class="box-nav d-flex justify-between">
-           <div class="filter">
-               <a href="/"><i class="fas fa-angle-double-left"></i> All Users</a>
-           </div>
-        </div>
-        <div class="form-title text-center">
-            <h2 class="text-dark">Update User</h2>
-            <span class="text-light">Use the below form to Update an account</span>
-        </div>
+<!-- Main Site -->
+<section class="dark:bg-gray-900">
+  <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+    <div id="alert-container" class="text-center"></div>
+    <h2
+      class="mb-4 text-xl font-bold text-gray-900 dark:text-white text-center"
+    >
+      Add a new product
+    </h2>
+    <p class="mb-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+      Use the below form to create a new account
+    </p>
+    <form method="POST" id="update_user">
+      <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+        <div class="sm:col-span-2">
+          <label
+            for="name"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Name</label
+          >
+          <input type="hidden" name="id" value="<%= user._id %>" />
 
-        <!-- add user form -->
-         <!-- form handling -->
- <form method="POST" id="update_user">
-    <div class="new_user">
-        <div class="form-group">
-            <label for="name" class="text-light">Name</label>
-            <input type="hidden" name="id" value="<%= user._id %>">
-            <input type="text" name="name" value="<%= user.name %>" placeholder="Mark Stoenis">
+          <input
+            type="text"
+            name="name"
+            value="<%= user.name %>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter name"
+          />
         </div>
-        <div class="form-group">
-            <label for="Email" class="text-light">Email</label>
-            <input type="text" name="email" value="<%= user.email%>" placeholder="example@gmail.com">
+        <div class="sm:col-span-2">
+          <label
+            for="email"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Email</label
+          >
+          <input
+            type="email"
+            name="email"
+            value="<%= user.email%>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter email"
+          />
         </div>
-        <div class="form-group">
-            <label for="gender" class="text-light">Gender</label>
-            <div class="radio inline">
-                <input type="radio" id="radio-2" name="gender" value="Male" <%= user.gender == 'Male' ? 'checked' : '' %>>
-                <label for="radio-2" class="radio-label">Male</label>
-            </div>
-            <div class="radio inline">
-                <input type="radio" id="radio-3" name="gender" value="Female"  <%= user.gender == 'Female' ? 'checked' : '' %> >
-                <label for="radio-3" class="radio-label">Female</label>
-            </div>
+        <div class="sm:col-span-2">
+          <label
+            for="street"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Street</label
+          >
+          <input
+            type="text"
+            name="street"
+            value="<%= user.street %>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter street"
+          />
         </div>
-
-        <div class="form-group">
-            <label for="gender" class="text-light">Status</label>
-            <div class="radio inline">
-                <input type="radio" id="radio-4" name="status" value="Active" <%= user.status == 'Active' ? 'checked' : '' %> >
-                <label for="radio-4" class="radio-label">Active</label>
-            </div>
-            <div class="radio inline">
-                <input type="radio" id="radio-5" name="status" value="Inactive" <%= user.status == 'Inactive' ? 'checked' : '' %> >
-                <label for="radio-5" class="radio-label">Inactive</label>
-            </div>
+        <div class="sm:col-span-2">
+          <label
+            for="city"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >City</label
+          >
+          <input
+            type="text"
+            name="city"
+            value="<%= user.city %>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter city"
+          />
         </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn text-dark update">Save</button>
+        <div class="sm:col-span-2">
+          <label
+            for="state"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >State</label
+          >
+          <input
+            type="text"
+            name="state"
+            value="<%= user.state %>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter state"
+          />
         </div>
-
-    </div>
-</form>
-       
-    </div>
-</main>
+        <div class="sm:col-span-2">
+          <label
+            for="phone"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Phone</label
+          >
+          <input
+            type="text"
+            name="phone"
+            value="<%= user.phone %>"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Enter phone"
+          />
+        </div>
+        <div class="flex items-center space-x-4">
+          <label
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Gender</label
+          >
+          <div>
+            <input type="radio" id="male" name="gender" value="Male" <%=
+            user.gender == 'Male' ? 'checked' : '' %>
+            class="focus:ring-primary-500 dark:focus:ring-primary-600" />
+            <label for="male" class="ml-2 text-sm text-gray-900 dark:text-white"
+              >Male</label
+            >
+          </div>
+          <div>
+            <input type="radio" id="female" name="gender" value="Female" <%=
+            user.gender == 'Female' ? 'checked' : '' %>
+            class="focus:ring-primary-500 dark:focus:ring-primary-600" />
+            <label
+              for="female"
+              class="ml-2 text-sm text-gray-900 dark:text-white"
+              >Female</label
+            >
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <label
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Status</label
+          >
+          <div>
+            <input type="radio" id="active" name="status" value="Active" <%=
+            user.status == 'Active' ? 'checked' : '' %>
+            class="focus:ring-primary-500 dark:focus:ring-primary-600" />
+            <label
+              for="active"
+              class="ml-2 text-sm text-gray-900 dark:text-white"
+              >Active</label
+            >
+          </div>
+          <div>
+            <input type="radio" id="inactive" name="status" value="Inactive" <%=
+            user.status == 'Inactive' ? 'checked' : '' %>
+            class="focus:ring-primary-500 dark:focus:ring-primary-600" />
+            <label
+              for="inactive"
+              class="ml-2 text-sm text-gray-900 dark:text-white"
+              >Inactive</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center mt-6">
+        <button
+          type="submit"
+          class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-purple-800 bg-white-50 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-purple-800 hover:text-white transition duration-700 ease-in-out shadow-md"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
 <!-- /Main Site -->
 
 <!-- include footer -->
