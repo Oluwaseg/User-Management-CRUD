@@ -57,6 +57,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // load assets
 app.use(express.static("assets"));
+app.use(express.static(path.join(__dirname, "assets")));
 // load routers
 app.use("/home", require("./routes/crudRoute"));
 app.use("/", require("./routes/authRoute"));
