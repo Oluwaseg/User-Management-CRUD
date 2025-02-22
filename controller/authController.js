@@ -1,11 +1,11 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { User } = require("../model/model");
-const nodemailer = require("nodemailer");
-const crypto = require("crypto");
-const validator = require("validator");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { User } = require('../model/model');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const validator = require('validator');
 
-require("dotenv").config();
+require('dotenv').config();
 const secretKey = process.env.JWT_SECRET;
 
 // Function to create a JWT token for a user
@@ -16,7 +16,7 @@ const createToken = (user) => {
     name: user.name,
   };
 
-  const token = jwt.sign(tokenData, secretKey, { expiresIn: "10m" });
+  const token = jwt.sign(tokenData, secretKey, { expiresIn: '10m' });
 
   return token;
 };
@@ -30,7 +30,7 @@ const verifyToken = (req, res, next) => {
 
   jwt.verify(token, secretKey, (err, decodedToken) => {
     if (err) {
-      console.error("JWT verification failed:", err);
+      console.error('JWT verification failed:', err);
       return next();
     }
     req.user = decodedToken;
@@ -51,8 +51,8 @@ const authMiddleware = async (req, res, next) => {
     const user = await User.findById(decoded.userId);
 
     if (!user || !user.tokens.includes(token)) {
-      res.clearCookie("jwt");
-      return res.redirect("/login");
+      res.clearCookie('jwt');
+      return res.redirect('/login');
     }
 
     req.user = user;
@@ -64,15 +64,15 @@ const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error("Auth Middleware - JWT verification failed:", error);
-    return res.redirect("/login");
+    console.error('Auth Middleware - JWT verification failed:', error);
+    return res.redirect('/login');
   }
 };
 const checkSessionTimeout = (req, res, next) => {
   if (req.user && req.user.exp < Math.floor(Date.now() / 1000)) {
     // Token has expired, clear cookie and redirect to login
-    res.clearCookie("jwt");
-    return res.redirect("/login");
+    res.clearCookie('jwt');
+    return res.redirect('/login');
   }
 
   next();
@@ -83,13 +83,13 @@ const registerUser = async (req, res) => {
     const { name, email, password, referrer } = req.body;
 
     if (!validator.isEmail(email)) {
-      req.flash("error_msg", "Invalid email format");
-      return res.redirect("/register");
+      req.flash('error_msg', 'Invalid email format');
+      return res.redirect('/');
     }
 
     if (password.length < 6) {
-      req.flash("error_msg", "Password must be at least 6 characters long");
-      return res.redirect("/register");
+      req.flash('error_msg', 'Password must be at least 6 characters long');
+      return res.redirect('/');
     }
 
     const existingUser = await User.findOne({
@@ -97,8 +97,8 @@ const registerUser = async (req, res) => {
     });
 
     if (existingUser) {
-      req.flash("error_msg", "Email already exists");
-      return res.redirect("/register");
+      req.flash('error_msg', 'Email already exists');
+      return res.redirect('/');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -116,16 +116,16 @@ const registerUser = async (req, res) => {
 
     await user.save();
 
-    res.cookie("jwt", token, {
+    res.cookie('jwt', token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
     });
 
-    res.redirect("/login");
+    res.redirect('/login');
   } catch (error) {
-    req.flash("error_msg", "Registration failed");
-    res.redirect("/");
+    req.flash('error_msg', 'Registration failed');
+    res.redirect('/');
   }
 };
 
@@ -136,15 +136,15 @@ const loginUser = async (req, res, next) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      req.flash("error_msg", "User not found");
-      return res.redirect("/login");
+      req.flash('error_msg', 'User not found');
+      return res.redirect('/login');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      req.flash("error_msg", "Invalid password");
-      return res.redirect("/login");
+      req.flash('error_msg', 'Invalid password');
+      return res.redirect('/login');
     }
 
     const token = createToken(user);
@@ -155,23 +155,23 @@ const loginUser = async (req, res, next) => {
 
     req.user = user;
 
-    res.cookie("jwt", token, {
+    res.cookie('jwt', token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
     });
 
-    return res.redirect("/home/");
+    return res.redirect('/home/');
   } catch (error) {
-    req.flash("error_msg", "Login failed");
+    req.flash('error_msg', 'Login failed');
     return next(error);
   }
 };
 const logoutUser = async (req, res) => {
   try {
     if (!req.user) {
-      console.log("Logout failed. User not authenticated.");
-      return res.redirect("/login");
+      console.log('Logout failed. User not authenticated.');
+      return res.redirect('/login');
     }
 
     if (req.user.tokens) {
@@ -182,13 +182,13 @@ const logoutUser = async (req, res) => {
       await req.user.save();
     }
 
-    res.clearCookie("jwt");
+    res.clearCookie('jwt');
 
-    console.log("Logout successful!");
-    res.redirect("/login");
+    console.log('Logout successful!');
+    res.redirect('/login');
   } catch (error) {
-    console.error("Logout failed:", error);
-    res.redirect("/home");
+    console.error('Logout failed:', error);
+    res.redirect('/home');
   }
 };
 
@@ -196,7 +196,7 @@ const checkTokenBlacklist = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (token && req.user?.tokens?.includes(token)) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
   next();
 };
@@ -208,17 +208,17 @@ const forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).send("User Not Found");
+      return res.status(404).send('User Not Found');
     }
 
     const token = jwt.sign({ email }, process.env.RESET_PASSWORD_SECRET, {
-      expiresIn: "15m",
+      expiresIn: '15m',
     });
 
     user.resetPasswordToken = token;
     await user.save();
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
@@ -228,7 +228,7 @@ const forgotPassword = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USERNAME,
       to: email,
-      subject: "Password Reset",
+      subject: 'Password Reset',
       html: `<p>You are receiving this email because you (or someone else) has requested the reset of the password for your account.</p>
             <p>Please click on the following link to reset your password. If you did not request this, please ignore this email and your password will remain unchanged.</p>
             <p><a href="${process.env.CLIENT_URL}/reset-password/${token}">Reset Password</a></p>`,
@@ -236,7 +236,7 @@ const forgotPassword = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        return res.status(500).send("Failed to send email");
+        return res.status(500).send('Failed to send email');
       } else {
         res.send(`<!DOCTYPE html>
         <html lang="en">
@@ -335,7 +335,7 @@ const forgotPassword = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send('Internal Server Error');
   }
 };
 
@@ -351,17 +351,17 @@ const resetPassword = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).send('User not found');
     }
 
     // Check if the reset password token matches the one stored in the user document
     if (user.resetPasswordToken !== token) {
-      return res.status(401).send("Invalid or expired token");
+      return res.status(401).send('Invalid or expired token');
     }
 
     // Validate the password format
-    if (typeof password !== "string") {
-      return res.status(400).send("Password must be a string");
+    if (typeof password !== 'string') {
+      return res.status(400).send('Password must be a string');
     }
 
     // Hash the new password
@@ -373,18 +373,18 @@ const resetPassword = async (req, res) => {
     await user.save();
 
     // Redirect the user to the login page after successful password reset
-    res.redirect("/login");
+    res.redirect('/login');
   } catch (error) {
     // Log the error for debugging
-    console.error("Reset password error:", error);
+    console.error('Reset password error:', error);
 
     // Handle different error scenarios
-    if (error.name === "TokenExpiredError") {
-      return res.status(401).send("Token expired");
-    } else if (error.name === "JsonWebTokenError") {
-      return res.status(401).send("Invalid token");
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).send('Token expired');
+    } else if (error.name === 'JsonWebTokenError') {
+      return res.status(401).send('Invalid token');
     } else {
-      return res.status(500).send("Internal Server Error");
+      return res.status(500).send('Internal Server Error');
     }
   }
 };
